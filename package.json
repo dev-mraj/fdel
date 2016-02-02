@@ -1,0 +1,27 @@
+{
+  "name": "wfdel",
+  "version": "1.0.0",
+  "description": "wfdel - Programme to delete directory recursivly that face problems due to long path names on windows",
+  "main": "fdel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JackFranklin/filesearch.git"
+  },
+  "author": {
+    "name": "Meghraj Choudhary",
+    "email": "dev.meghraj@gmail.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "0.10.32"
+  },
+  "keywords": [
+    "rm","delete","window long path","long path","destination is too long"
+  ],
+  "bin": {
+    "fdel" : "fdel.js"
+  }
+}
