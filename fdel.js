@@ -6,12 +6,19 @@ var fs = require("fs");
 var path = require("path");
 var argv=process.argv.slice(2);
 
+//TODO:: properly handler argumetns, its bit danger..
 var dir=argv[0];
 if(!dir){
     console.log('Specify path to delete.');
 } else {
     dir = path.resolve(__dirname, dir);
 
+    /**
+     * rename this to shorter name available.
+     * @param dir
+     * @param file
+     * @returns {string}
+     */
     var renameDirecory=function(dir,file){
         var done=false;
         var i=0;
@@ -78,6 +85,8 @@ if(!dir){
             }
         });
     };
+    
+    
     forceDelDirecory(dir,function(){
         deleteFolderRecursive(dir);
     });
