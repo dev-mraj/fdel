@@ -51,15 +51,20 @@ var deleteFolderRecursive = function(path) {
     }
 };
 
-var shortRenameEverything = function (dir,cb) {
+var shortRenameEverything = function (dir,cb,progress) {
+    
+    
     fs.readdir(dir, function(err, list) {
         if (err) {
             console.error(err);
             cb();
         } else {
             var did=[];
+            var lastProgress=0;
             var checkDone=function(){
                 did.push(1);
+                lastProgress=Math.ceil(((list.length==0?0:did.length)/list.length)*100);
+                progress(lastProgress);
                 if(list.length==0 || list.length==did.length){
                     cb();
                 }
@@ -76,7 +81,12 @@ var shortRenameEverything = function (dir,cb) {
                     path=renameDirecory(dir,file);
                     // if(debug)
                     //    console.log('recursive :'+dir+'/'+file);
-                    shortRenameEverything(path,checkDone);
+                    shortRenameEverything(path,checkDone,function(done){
+                        progress(
+                            lastProgress
+                            +(1*(done/100))
+                        );
+                    });
                 } else {
                     //if(debug)
                     //    console.log('removing :'+dir+'/'+file);
