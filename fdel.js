@@ -4,6 +4,7 @@
 
 
 var lib=require('./lib');
+var path=require('path');
 var argv=process.argv.slice(2);
 var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
