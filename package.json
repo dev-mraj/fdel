@@ -1,6 +1,6 @@
 {
   "name": "fdel",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "fdel - Programme to delete directory recursivly that face problems due to long path names on windows",
   "main": "fdel.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/JackFranklin/filesearch.git"
+    "url": "git://github.com/dev-mraj/fdel.git"
   },
   "author": {
     "name": "Meghraj Choudhary",
