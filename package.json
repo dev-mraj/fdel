@@ -1,9 +1,9 @@
 {
   "name": "fdel",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "fdel - Programme to delete directory recursivly that face problems due to long path names on windows",
   "main": "fdel.js",
-  "scripts": {
+  "scripts": { 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
