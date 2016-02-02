@@ -1,7 +1,7 @@
 {
-  "name": "wfdel",
+  "name": "fdel",
   "version": "1.0.0",
-  "description": "wfdel - Programme to delete directory recursivly that face problems due to long path names on windows",
+  "description": "fdel - Programme to delete directory recursivly that face problems due to long path names on windows",
   "main": "fdel.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
