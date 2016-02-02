@@ -1,7 +1,7 @@
 # fdel - Window long pathnames delete programme
 
-There are many times when node_modules folder is not easy to delete. Thats here is little command that can help anyone.
-
+There are many times when node_modules folder is not easy to delete. That's why here is little command that can help anyone.
+it will delete complete folder and before deleting it will shorten all directories name to single letter.
 
 
 ```sh
