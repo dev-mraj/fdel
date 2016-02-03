@@ -4,6 +4,22 @@ var debug=false;
 /**
  * @author Meghraj Choudhary
  */
+
+var recursiveProgress=function(total,back){
+    var did=0;
+    var apart=(1/total)*100;
+    var done=0;
+    return function(percentage) {
+        if (percentage >= 100){
+            did++;
+            done = (((did) / total) * 100);
+            back(done);
+        } else {
+            back(done+((percentage/100)*apart));
+        }
+    };
+};
+
 /**
  * rename this to shorter name available.
  * @param dir
@@ -35,67 +51,73 @@ var renameDirecory=function(dir,file){
  * @param path
  */
 
-var deleteFolderRecursive = function(path) {
-    var files = [];
+var deleteFolderRecursive = function(path,progress) {
     if( fs.existsSync(path) ) {
-        files = fs.readdirSync(path);
-        files.forEach(function(file){
-            var curPath = path + "/" + file;
+        var files = fs.readdirSync(path);
+        
+        var del=function(){
+            try {
+                fs.rmdirSync(path);
+                if(files.length==0)
+                    progress(100);
+            } catch (e){
+                console.log(e);
+            }
+        };
+        var children=recursiveProgress(files.length,function(done){
+            if(done===100){
+                del();
+            }
+            progress(done);
+        });
+        
+        if(files.length==0)
+            return del() && progress(100);
+        
+        for(var i=0;i<files.length;i++){
+            var curPath = path + "/" + files[i];
             if(fs.lstatSync(curPath).isDirectory()) { // recurse
-                deleteFolderRecursive(curPath);
+                deleteFolderRecursive(curPath,children);
             } else { // delete file
                 fs.unlinkSync(curPath);
+                children(100);
             }
-        });
-        fs.rmdirSync(path);
+        }       
+        
+    } else {
+        progress(100);
     }
 };
 
-var shortRenameEverything = function (dir,cb,progress) {
-    
-    
-    fs.readdir(dir, function(err, list) {
-        if (err) {
-            console.error(err);
-            cb();
-        } else {
-            var did=[];
-            var lastProgress=0;
-            var checkDone=function(){
-                did.push(1);
-                lastProgress=Math.ceil(((list.length==0?0:did.length)/list.length)*100);
-                progress(lastProgress);
-                if(list.length==0 || list.length==did.length){
-                    cb();
-                }
-            };
-            if(list.length==0)
-                checkDone();
 
-            list.forEach(function(file){
-                var path = dir + "/" + file;
 
-                // Keep renaming all directories to one..
-                var stat=fs.lstatSync(path);
-                if(stat.isDirectory()){
-                    path=renameDirecory(dir,file);
-                    // if(debug)
-                    //    console.log('recursive :'+dir+'/'+file);
-                    shortRenameEverything(path,checkDone,function(done){
-                        progress(
-                            lastProgress
-                            +(1*(done/100))
-                        );
-                    });
-                } else {
-                    //if(debug)
-                    //    console.log('removing :'+dir+'/'+file);
-                    fs.unlinkSync(path);
-                    checkDone();
-                }
-            });
+var shortRenameEverything = function (dir,progress) {
+
+    try {
+        var files=fs.readdirSync(dir);
+        if(files.length==0)
+            return progress(100);
+
+        var children=recursiveProgress(files.length,progress);
+        
+        for(var i=0;i<files.length;i++) {
+            var path = dir + "/" + files[i];
+
+            // Keep renaming all directories to one..
+            var stat=fs.lstatSync(path);
+            if(stat.isDirectory()){
+                path=renameDirecory(dir,files[i]);
+                shortRenameEverything(path,children);
+            } else {
+                fs.unlinkSync(path);
+                children(100);
+            }
         }
-    });
+        
+    } catch (e) {
+        console.error(e);
+        progress(100);
+    }
 };
 
 
