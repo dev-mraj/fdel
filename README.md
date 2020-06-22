@@ -15,5 +15,3 @@ fdel ./any_path
 ```
 
 There are still few thing that need to improve in this, will do later on when get some free time.
-
-[mraj.in](http://mraj.in)
